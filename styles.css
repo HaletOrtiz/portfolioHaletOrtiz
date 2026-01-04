@@ -1,0 +1,599 @@
+@keyframes aparecer {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #000; /* Fondo negro base para evitar flash blanco */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background-color: #000;
+    line-height: 0;
+    font-size: 0;
+}
+.homers-web-page {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top center;
+    display: block;
+    
+    /* OPTIMIZACIÓN DE FLUIDEZ */
+    will-change: transform, opacity;  /* NUEVO: Avisa al navegador */
+    transform: translateZ(0);         /* NUEVO: Fuerza uso de tarjeta gráfica */
+
+    /* Su animación de tiempo */
+    opacity: 0;
+    animation: aparecer 1s ease-in-out 0.5s forwards;
+}
+/* =========================================
+   AJUSTE PARA MÓVILES (SIN HUECOS)
+   ========================================= */
+/* =========================================
+   AJUSTE PARA MÓVILES (CORREGIDO)
+   ========================================= */
+@media (max-width: 768px) {
+    
+    /* 1. Quitamos el modo fijo y el espacio de texto fantasma */
+    header {
+        position: relative !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        
+        /* TRUCO: Mata el espacio reservado para letras */
+        line-height: 0 !important; 
+        font-size: 0 !important;
+    }
+
+    /* 2. El video debe ser un bloque sólido */
+    .homers-web-page {
+        width: 100%;
+        height: auto !important;
+        position: relative;
+        display: block; 
+        
+        /* Aseguramos que pise la línea base */
+        vertical-align: bottom; 
+    }
+
+    /* 3. IMPORTANTE: El Main debe perder el margen de "telón" de escritorio */
+    main {
+        margin-top: 0 !important; /* Esto elimina el hueco gigante */
+        position: relative;
+        top: -1px; /* Pequeño hack para asegurar que solapen pixel a pixel */
+    }
+}/* =========================================
+   3. MAIN Y ESTRUCTURA - LA CORTINA QUE SUBE
+   ========================================= */
+main {
+    position: relative; /* Necesario para que el z-index funcione */
+    z-index: 10;        /* Debe ser mayor que -1 para tapar a Homer */
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000; /* El color sólido de la cortina */
+    overflow: hidden;
+    
+    /* --- ¡ESTA ES LA CLAVE QUE FALTABA! --- */
+    /* Le decimos: "Empieza 100vh (una pantalla entera) más abajo".
+       Así, al cargar la página, Homer se ve completo. Al hacer scroll,
+       este margen sube y arrastra la cortina negra sobre Homer. */
+    margin-top: 100vh;
+    
+    /* Opcional: Una sombra arriba para dar sensación de profundidad */
+    box-shadow: 0 -20px 30px rgba(0,0,0,0.8);
+}
+/* =========================================
+   4. FONDO ANIMADO (PATRÓN)
+   ========================================= */
+.container {
+    position: absolute;
+    inset: 0;
+    background: #000;
+
+}
+
+/* Capa de Filtros (Efecto Blur/Color) - OPTIMIZADA */
+.container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: radial-gradient(
+        circle at 50% 50%,
+        #0000 0,
+        #0000 2px,
+        hsl(0 0 4%) 2px
+    );
+    background-size: 8px 8px;
+    animation: 5s ease-in-out hiii infinite;
+    --f: blur(3em) brightness(9);
+    
+    /* OPTIMIZACIÓN DE RENDIMIENTO */
+    /* will-change: backdrop-filter;  REMOVED for performance */
+    /* transform: translateZ(0); REMOVED for performance */
+}
+
+/* Capa de Patrón Geométrico - OPTIMIZADA */
+.container::before {
+    content: "";
+    position: absolute;
+    inset: -145%;
+    rotate: -45deg;
+    --c: rgb(82, 83, 99);
+    --c1: rgb(255, 255, 255);
+    background-image: radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 235px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 117.5px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 252px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 252px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 126px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 150px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 150px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 75px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 253px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 253px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 126.5px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 204px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 204px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 102px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 134px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 134px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 67px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 179px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 179px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 89.5px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 299px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 299px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 149.5px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 215px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 215px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 107.5px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 281px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 281px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 140.5px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 158px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 158px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 79px, var(--c1) 100%, #0000 150%),
+        radial-gradient(4px 100px at 0px 210px, var(--c), #0000),
+        radial-gradient(4px 100px at 300px 210px, var(--c), #0000),
+        radial-gradient(3px 4px at 150px 105px, var(--c1) 100%, #0000 150%);
+    background-size: 300px 235px, 300px 235px, 300px 235px, 300px 252px, 300px 252px, 300px 252px, 300px 150px, 300px 150px, 300px 150px, 300px 253px, 300px 253px, 300px 253px, 300px 204px, 300px 204px, 300px 204px, 300px 134px, 300px 134px, 300px 134px, 300px 179px, 300px 179px, 300px 179px, 300px 299px, 300px 299px, 300px 299px, 300px 215px, 300px 215px, 300px 215px, 300px 281px, 300px 281px, 300px 281px, 300px 158px, 300px 158px, 300px 158px, 300px 210px, 300px 210px, 300px 210px;
+    animation: hi 150s linear infinite;
+    
+    /* OPTIMIZACIÓN DE RENDIMIENTO */
+    /* will-change: background-position; REMOVED for performance */
+    /* transform: translateZ(0); REMOVED for performance */
+}
+
+/* =========================================
+   5. CONTENIDO DEL PERFIL (TEXTO Y FOTO)
+   ========================================= */
+.contenido-superior {
+    position: relative;
+    z-index: 10;        /* Encima del fondo */
+    color: white;
+    padding: 50px;
+    max-width: 1000px;
+    margin: 0 auto;
+    
+}
+
+/* Contenedor Flex (El Banco) */
+.perfil-banco {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* Tarjeta negra para el texto */
+.texto-info {
+    background-color: #000;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    flex: 1; /* Ocupa el espacio disponible */
+}
+
+/* Foto de Perfil */
+.perfil {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    flex-shrink: 0; /* Evita deformación */
+}
+
+/* Versión Móvil */
+@media (max-width: 768px) {
+    .perfil-banco {
+        flex-direction: column-reverse; /* Foto arriba, texto abajo */
+        text-align: center;
+    }
+    
+    .texto-info {
+        padding: 20px;
+    }
+}
+
+/* =========================================
+   6. KEYFRAMES DEL FONDO
+   ========================================= */
+@keyframes hi {
+    0% { background-position: 0px 220px, 3px 220px, 151.5px 337.5px, 25px 24px, 28px 24px, 176.5px 150px, 50px 16px, 53px 16px, 201.5px 91px, 75px 224px, 78px 224px, 226.5px 350.5px, 100px 19px, 103px 19px, 251.5px 121px, 125px 120px, 128px 120px, 276.5px 187px, 150px 31px, 153px 31px, 301.5px 120.5px, 175px 235px, 178px 235px, 326.5px 384.5px, 200px 121px, 203px 121px, 351.5px 228.5px, 225px 224px, 228px 224px, 376.5px 364.5px, 250px 26px, 253px 26px, 401.5px 105px, 275px 75px, 278px 75px, 426.5px 180px; }
+    to { background-position: 0px 6800px, 3px 6800px, 151.5px 6917.5px, 25px 13632px, 28px 13632px, 176.5px 13758px, 50px 5416px, 53px 5416px, 201.5px 5491px, 75px 17175px, 78px 17175px, 226.5px 17301.5px, 100px 5119px, 103px 5119px, 251.5px 5221px, 125px 8428px, 128px 8428px, 276.5px 8495px, 150px 9876px, 153px 9876px, 301.5px 9965.5px, 175px 13391px, 178px 13391px, 326.5px 13540.5px, 200px 14741px, 203px 14741px, 351.5px 14848.5px, 225px 18770px, 228px 18770px, 376.5px 18910.5px, 250px 5082px, 253px 5082px, 401.5px 5161px, 275px 6375px, 278px 6375px, 426.5px 6480px; }
+}
+
+@keyframes hiii {
+    0% { backdrop-filter: var(--f) hue-rotate(0deg); }
+    25% { backdrop-filter: var(--f) hue-rotate(-25deg); }
+    28% { backdrop-filter: var(--f) hue-rotate(0deg); }
+    32% { backdrop-filter: var(--f) hue-rotate(-20deg); }
+    39% { backdrop-filter: var(--f) hue-rotate(0deg); }
+    40% { backdrop-filter: var(--f) hue-rotate(-20deg); }
+    41% { backdrop-filter: var(--f) hue-rotate(0deg); }
+    42% { backdrop-filter: var(--f) hue-rotate(-25deg); }
+    44% { backdrop-filter: var(--f) hue-rotate(0deg); }
+    58% { backdrop-filter: var(--f) hue-rotate(-20deg); }
+    64% { backdrop-filter: var(--f) hue-rotate(0deg); }
+    80% { backdrop-filter: var(--f) hue-rotate(-25deg); }
+    to { backdrop-filter: var(--f) hue-rotate(0deg); }
+}
+/* =========================================
+   7. SECCIONES (PROYECTOS Y CONTACTO)
+   ========================================= */
+
+/* Separador sutil entre secciones */
+.separador {
+    border: 0;
+    height: 1px;
+    /* Crea una línea que se desvanece en los bordes */
+    background: linear-gradient(to right, transparent, #333, transparent);
+    margin: 60px 0; /* Espacio vertical generoso */
+}
+
+/* Títulos de sección */
+.titulo-seccion {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #fff;
+    text-transform: uppercase; /* Letras mayúsculas para más impacto */
+    letter-spacing: 2px;       /* Separación entre letras */
+}
+
+/* --- ESTILOS DE PROYECTOS --- */
+
+/* La Rejilla (Grid) para colocar las tarjetas */
+.grid-proyectos {
+    display: grid;
+    /* Esto hace magia: crea columnas automáticas de mínimo 300px */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px; /* Espacio entre tarjetas */
+}
+
+/* La Tarjeta Individual */
+.tarjeta-proyecto {
+    background-color: #000;  /* Fondo negro igual que tu bio */
+    border: 1px solid #333;  /* Borde gris sutil */
+    border-radius: 20px;
+    padding: 30px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    
+    /* Para que el contenido se distribuya bien verticalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Efecto Hover: Al pasar el ratón por encima */
+.tarjeta-proyecto:hover {
+    transform: translateY(-10px); /* La tarjeta flota hacia arriba */
+    border-color: #fff;           /* El borde se ilumina en blanco */
+}
+
+.tarjeta-proyecto h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.tarjeta-proyecto p {
+    color: #ccc; /* Gris claro para que no canse la vista */
+    line-height: 1.6;
+}
+
+/* Las "Píldoras" de tecnologías */
+.tecnologias {
+    display: flex;
+    flex-wrap: wrap; /* Si no caben, bajan a la siguiente línea */
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.tecnologias span {
+    font-size: 0.85rem;
+    padding: 5px 15px;
+    border: 1px solid #555;
+    border-radius: 50px;     /* Bordes totalmente redondos */
+    color: #ddd;
+    background: rgba(255, 255, 255, 0.05); /* Fondo muy sutil */
+}
+
+/* Enlaces (Ver Código) */
+.enlaces-proyecto a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid #fff; /* Subrayado fino */
+    padding-bottom: 2px;
+    transition: opacity 0.3s;
+}
+
+.enlaces-proyecto a:hover {
+    opacity: 0.7; /* Se atenúa un poco al pasar el ratón */
+}
+/* --- BOTÓN LINKEDIN UIVERSE --- */
+
+.light-button .bt {
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  outline: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none; /* Quitamos el subrayado del enlace */
+}
+
+.light-button .bt .button-holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  background-color: #0a0a0a;
+  border-radius: 5px;
+  color: #0a66c2; /* Corregido el error de la 'z' */
+  font-weight: 700;
+  transition: 300ms;
+  outline: #0f0f0f 2px solid;
+  outline-offset: 20;
+}
+
+.light-button .bt .button-holder svg {
+  height: 50px;
+  fill: #0f0f0f; /* El icono empieza oscuro */
+  transition: 300ms;
+}
+
+.light-button .bt .light-holder {
+  position: absolute;
+  height: 200px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.light-button .bt .light-holder .dot {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #0a0a0a;
+  border-radius: 10px;
+  z-index: 2;
+}
+
+.light-button .bt .light-holder .light {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: 200px;
+  clip-path: polygon(50% 0%, 25% 100%, 75% 100%);
+  background: transparent;
+}
+
+/* Efectos Hover (Al pasar el ratón) */
+.light-button .bt:hover .button-holder svg {
+  fill: rgba(10, 102, 194, 1); /* El icono se pone azul */
+}
+
+.light-button .bt:hover .button-holder {
+  color: rgba(10, 102, 194, 1);
+  outline: rgba(10, 102, 194, 1) 2px solid;
+  outline-offset: 2px;
+}
+
+.light-button .bt:hover .light-holder .light {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    180deg,
+    rgba(10, 102, 194, 1) 0%,
+    rgba(255, 255, 255, 0) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.botones-contacto {
+    /* ... lo que ya tenía ... */
+    align-items: flex-end; /* Esto alinea todos los botones al suelo */
+}
+/* --- FOOTER GENERAL --- */
+footer {
+    background-color: #000;
+    border-top: 1px solid #333;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+footer h3 {
+    color: white;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* El Contenedor Mágico: Alinea todo abajo y al centro */
+.botones-contacto {
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: flex-end;   /* Alineado al SUELO (Importante por el rayo de luz) */
+    gap: 20px;               /* Espacio entre botones */
+    margin-bottom: 40px;
+    flex-wrap: wrap;         /* Para que no se rompa en móviles */
+}
+
+.copyright {
+    color: #444;
+    font-size: 0.8rem;
+}
+
+/* --- BOTONES SIMPLES (GMAIL Y GITHUB) --- */
+.btn-cuadrado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;  /* Mismo ancho que el de LinkedIn */
+    height: 100px; /* Mismo alto que la CAJA de LinkedIn (sin la luz) */
+    background-color: #0a0a0a;
+    border: 2px solid #0f0f0f;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cuadrado span {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.btn-cuadrado:hover {
+    border-color: #fff;
+    background-color: #1a1a1a;
+    transform: translateY(-5px); /* Pequeño salto al pasar el ratón */
+}
+
+/* --- ARREGLO BOTÓN LINKEDIN (UIVERSE OPTIMIZADO) --- */
+
+.light-button .bt {
+  position: relative;
+  height: 200px; /* Ocupa espacio hacia arriba */
+  display: flex;
+  align-items: flex-end; /* Pone la caja abajo del todo */
+  outline: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.light-button .bt .button-holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  background-color: #0a0a0a;
+  border-radius: 5px;
+  color: #0a66c2;
+  font-weight: 700;
+  /* Transición rápida para el borde */
+  transition: 0.2s ease-out; 
+  outline: #0f0f0f 2px solid;
+  outline-offset: 20;
+}
+
+.light-button .bt .button-holder svg {
+  height: 50px;
+  fill: #0f0f0f;
+  transition: 0.2s ease-out;
+}
+
+.light-button .bt .light-holder {
+  position: absolute;
+  height: 200px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none; /* Para que la luz no moleste al click */
+}
+
+.light-button .bt .light-holder .dot {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #0a66c2; /* Azul desde el principio */
+  border-radius: 10px;
+  z-index: 2;
+  opacity: 0; /* Invisible al inicio */
+  transition: opacity 0.2s;
+}
+
+.light-button .bt .light-holder .light {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: 200px;
+  clip-path: polygon(50% 0%, 25% 100%, 75% 100%);
+  
+  /* AQUÍ ESTÁ EL TRUCO DE VELOCIDAD: */
+  /* El gradiente ya está cargado, solo cambiamos opacidad */
+  background: linear-gradient(
+    180deg,
+    rgba(10, 102, 194, 1) 0%,
+    rgba(255, 255, 255, 0) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0; /* Invisible al inicio */
+  transition: opacity 0.2s ease-out; /* Transición de opacidad es instantánea */
+}
+
+/* Efectos Hover */
+.light-button .bt:hover .button-holder svg {
+  fill: rgba(10, 102, 194, 1);
+}
+
+.light-button .bt:hover .button-holder {
+  color: rgba(10, 102, 194, 1);
+  outline: rgba(10, 102, 194, 1) 2px solid;
+  outline-offset: 2px;
+}
+
+/* Al hacer hover, la luz y el punto se vuelven visibles al instante */
+.light-button .bt:hover .light-holder .light,
+.light-button .bt:hover .light-holder .dot {
+  opacity: 1;
+}
+/* --- MOTOR DE SCROLL (JS) --- */
+.oculto {
+    opacity: 0;
+    transform: translateY(50px); /* Empieza 50px más abajo */
+    transition: all 1s ease-out; /* La transición suave controlada por JS */
+}
+
+.mostrar {
+    opacity: 1;
+    transform: translateY(0);    /* Sube a su sitio */
+}
