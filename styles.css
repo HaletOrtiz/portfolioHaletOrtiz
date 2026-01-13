@@ -37,42 +37,64 @@ header {
     animation: aparecer 1s ease-in-out 0.5s forwards;
 }
 /* =========================================
-   AJUSTE PARA MÓVILES (SIN HUECOS)
-   ========================================= */
-/* =========================================
-   AJUSTE PARA MÓVILES (CORREGIDO)
+   AJUSTE PARA MÓVILES (FIXED + SIN HUECOS)
    ========================================= */
 @media (max-width: 768px) {
     
-    /* 1. Quitamos el modo fijo y el espacio de texto fantasma */
+    /* 1. EL VIDEO SE QUEDA CLAVADO AL FONDO */
     header {
-        position: relative !important;
-        height: auto !important;
-        min-height: auto !important;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto !important;   /* Altura automática según el video */
+        z-index: -1;               /* Detrás de todo */
+        
+        /* Limpieza */
         padding: 0 !important;
         margin: 0 !important;
-        
-        /* TRUCO: Mata el espacio reservado para letras */
-        line-height: 0 !important; 
+        line-height: 0 !important;
         font-size: 0 !important;
+        background: #000;
     }
 
-    /* 2. El video debe ser un bloque sólido */
+    /* 2. EL VIDEO MANTIENE SU PROPORCIÓN (Se ve entero) */
     .homers-web-page {
         width: 100%;
         height: auto !important;
-        position: relative;
-        display: block; 
-        
-        /* Aseguramos que pise la línea base */
-        vertical-align: bottom; 
+        display: block;
+        /* No usamos object-fit porque height:auto ya lo ajusta */
     }
 
-    /* 3. IMPORTANTE: El Main debe perder el margen de "telón" de escritorio */
+    /* 3. EL MAIN SE EMPUJA MANUALMENTE HACIA ABAJO */
     main {
-        margin-top: 0 !important; /* Esto elimina el hueco gigante */
+        /* AQUÍ ESTÁ LA MAGIA: 
+           Calculamos la altura de un video estándar (16:9).
+           56.25vw significa "56.25% del ancho de la pantalla".
+           Esto crea el hueco exacto para que se vea el video.
+        */
+        margin-top: 56.25vw !important; 
+        
         position: relative;
-        top: -1px; /* Pequeño hack para asegurar que solapen pixel a pixel */
+        z-index: 10;
+        background-color: #000; /* Fondo negro para que tape al video al subir */
+        
+        /* Sombra negra sólida hacia arriba para tapar cualquier micro-hueco */
+        box-shadow: 0 -5px 0px #000; 
+    }
+
+    /* 4. AJUSTES VISUALES */
+    .perfil-banco {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+    
+    .texto-info {
+        padding: 20px;
+    }
+    
+    .contenido-superior {
+        padding: 30px 20px;
     }
 }/* =========================================
    3. MAIN Y ESTRUCTURA - LA CORTINA QUE SUBE
