@@ -1,20 +1,27 @@
-// Esperamos a que el contenido cargue (buena práctica aunque usemos defer)
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Creamos el observador (el vigilante)
+    // --- 1. CORRECCIÓN PARA SAFARI (Forzar Autoplay) ---
+    const video = document.querySelector('.homers-web-page');
+
+    if (video) {
+        // Aseguramos que esté muteado (requisito indispensable para Safari/Chrome)
+        video.muted = true;
+
+        // Intentamos reproducir programáticamente
+        video.play().catch(error => {
+            console.log("El navegador bloqueó el autoplay (posible Modo Ahorro de Batería):", error);
+        });
+    }
+
+    // --- 2. ANIMACIONES AL HACER SCROLL (Observer) ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // Si el elemento es visible
             if (entry.isIntersecting) {
-                // Le añadimos la clase 'mostrar' para activar el CSS
                 entry.target.classList.add('mostrar');
             }
         });
     });
 
-    // Seleccionamos TODOS los elementos que tengan la clase 'oculto'
     const hiddenElements = document.querySelectorAll('.oculto');
-
-    // Le decimos al observador que vigile a cada uno de ellos
     hiddenElements.forEach((el) => observer.observe(el));
 });
