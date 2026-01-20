@@ -1,19 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. CORRECCIÓN PARA SAFARI (Forzar Autoplay) ---
+    // --- FORZAR AUTOPLAY EN MÓVILES ---
     const video = document.querySelector('.homers-web-page');
 
     if (video) {
-        // Aseguramos que esté muteado (requisito indispensable para Safari/Chrome)
+        // 1. Forzamos el silencio por código (Chrome es paranoico con esto)
         video.muted = true;
 
-        // Intentamos reproducir programáticamente
-        video.play().catch(error => {
-            console.log("El navegador bloqueó el autoplay (posible Modo Ahorro de Batería):", error);
-        });
+        // 2. Promesa de reproducción
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // El video empezó a reproducirse automáticamente
+                console.log("Autoplay iniciado correctamente.");
+            })
+                .catch(error => {
+                    // Si entra aquí, es 100% bloqueo del Sistema Operativo
+                    console.log("El navegador bloqueó el autoplay:", error);
+
+                    // Opción desesperada: Volver a silenciar y reintentar
+                    video.muted = true;
+                    video.play();
+                });
+        }
     }
 
-    // --- 2. ANIMACIONES AL HACER SCROLL (Observer) ---
+    // --- ANIMACIONES DE SCROLL (Intersection Observer) ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
